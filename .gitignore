@@ -1,0 +1,4 @@
+build-rpi/
+yocto-*/
+poky/
+pi-images/
