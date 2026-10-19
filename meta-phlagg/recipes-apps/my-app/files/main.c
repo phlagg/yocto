@@ -84,7 +84,7 @@ int main(void) {
                 }
             }
         }
-        usleep(50000); // 50ms sleep to conserve i7 simulation CPU usage loops
+        usleep(50000); // 50ms sleep to conserve CPU usage loops
     }
 
     set_terminal_raw(0);

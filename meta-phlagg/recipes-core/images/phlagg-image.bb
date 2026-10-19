@@ -14,6 +14,7 @@ EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-logi
 # 3. Core peripheral drivers and wireless packages (CHANGED: Replaced networkmanager with dhcpcd + wpa-supplicant)
 IMAGE_INSTALL:append = " \
     my-app \
+    telemetryd \
     dhcpcd \
     wpa-supplicant \
     net-tools \
