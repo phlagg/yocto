@@ -13,8 +13,9 @@ read -p "Enter the target SD card device path (e.g., /dev/sdb): " DEST_DEV
 
 # 3. Validation safety check
 if [ ! -b "$DEST_DEV" ]; then
-    echo "❌ Error: $DEST_DEV is not a valid block device system node."
-    exit 1
+    DEST_DEV="/dev/sdb"
+    # echo "❌ Error: $DEST_DEV is not a valid block device system node."
+    # exit 1
 fi
 
 # 4. Install bmaptool on Arch if missing

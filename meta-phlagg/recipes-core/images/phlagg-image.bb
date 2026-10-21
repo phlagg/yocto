@@ -11,12 +11,10 @@ require recipes-core/images/core-image-minimal.bb
 IMAGE_FEATURES += "ssh-server-dropbear"
 EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-login"
 
-# 3. Core peripheral drivers and wireless packages (CHANGED: Replaced networkmanager with dhcpcd + wpa-supplicant)
+# 3. Core peripheral drivers and wireless packages
 IMAGE_INSTALL:append = " \
-    my-app \
-    telemetryd \
-    dhcpcd \
     wpa-supplicant \
+    dhcpcd \
     net-tools \
     kernel-modules \
     wireless-regdb-static \
@@ -27,4 +25,5 @@ IMAGE_INSTALL:append = " \
     libgpiod-tools \
     i2c-tools \
     spitools \
+    telemetryd \
 "

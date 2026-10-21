@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        echo "Starting telemetryd"
+        /usr/bin/telemetryd &
+        ;;
+    stop)
+        echo "Stopping telemetryd"
+        killall telemetryd
+        ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0

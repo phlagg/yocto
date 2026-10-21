@@ -1,0 +1,24 @@
+[
+  {
+    "label": "Install Service",
+    "command": "scp meta-phlagg/recipes-apps/telemetryd/telemetryd root@192.168.1.214:/etc/init.d && ssh root@192.168.1.214 \"chmod +x /etc/init.d/telemetryd && ln -s ../init.d/telemetryd /etc/rc5.d/S99telemetryd\"",
+    "use_new_terminal": false,
+    "hide": "on_success",
+  },
+  {
+    "label": "Target: Reboot",
+    "command": "ssh root@192.168.1.214 \"reboot\"",
+    "use_new_terminal": false,
+    "hide": "on_success",
+  },
+  {
+    "label": "Tail Telemetryd.log",
+    "command": "ssh root@192.168.1.214 \"tail /var/log/telemetryd.log\"",
+    "use_new_terminal": false,
+  },
+  {
+    "label": "Build Go Service",
+    "command": "GOOS=linux GOARCH=arm64 go build -o build-rpi/go/telemetryd ./meta-phlagg/recipes-apps/telemetryd/cmd",
+    "use_new_terminal": false,
+  },
+]

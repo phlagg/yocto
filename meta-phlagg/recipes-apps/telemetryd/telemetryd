@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        echo "Starting telemetryd"
+        /usr/bin/telemetryd >> /var/log/telemetryd.log 2>&1 &
+        ;;
+    stop)
+        killall telemetryd
+        ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+esac

@@ -10,8 +10,7 @@ SRC_URI = " \
     file://go.sum;subdir=src/telemetryd \
     file://cmd/;subdir=src/telemetryd \
     file://internal/;subdir=src/telemetryd \
-    file://telemetryd.service \
-"
+    file://telemetryd.init"
 
 S = "${WORKDIR}"
 
@@ -22,12 +21,14 @@ GO_IMPORT = "telemetryd"
 GO_INSTALL = "${GO_IMPORT}/cmd/telemetryd"
 GO_LINKSHARED = ""
 
-SYSTEMD_SERVICE:${PN} = "telemetryd.service"
-SYSTEMD_AUTO_ENABLE:${PN} = "enable"
+inherit update-rc.d
+
+INITSCRIPT_NAME = "telemetryd"
+INITSCRIPT_PARAMS = "defaults 99"
 
 do_install:append() {
-    install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/telemetryd.service ${D}${systemd_system_unitdir}/
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 \
+        ${WORKDIR}/telemetryd.init \
+        ${D}${sysconfdir}/init.d/telemetryd
 }
-
-FILES:${PN} += "${systemd_system_unitdir}/telemetryd.service"
