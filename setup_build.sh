@@ -15,6 +15,8 @@ fi
 echo "Initializing Bitbake environment..."
 source poky/oe-init-build-env build-rpi
 
+git config --global --add safe.directory '*'
+
 # 3. Add configuration if it's a fresh build directory
 if ! grep -q 'MACHINE = "raspberrypi3-64"' conf/local.conf; then
     echo "Configuring for Raspberry Pi 3B+..."
@@ -41,13 +43,16 @@ if ! grep -q 'MACHINE = "raspberrypi3-64"' conf/local.conf; then
     echo 'LICENSE_FLAGS_ACCEPTED:append = " synaptics-killswitch"' >> conf/local.conf
     echo 'MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS:append = " linux-firmware-rpidistro-bcm43455"' >> conf/local.conf
 
-    # PURE EMBEDDED HEADLESS NETWORKING (No systemd, No NetworkManager, No Graphics)
-    echo 'DISTRO_FEATURES:append = " wifi bluetooth ipv4 ipv6"' >> conf/local.conf
-    echo 'DISTRO_FEATURES:remove = " wayland vulkan x11 amdhsa opencl directfb systemd 3g"' >> conf/local.conf
+    # PURE EMBEDDED HEADLESS NETWORKING (With Systemd, No Graphics)
+    echo 'DISTRO_FEATURES:append = " systemd usrmerge wifi bluetooth ipv4 ipv6"' >> conf/local.conf
+    echo 'DISTRO_FEATURES:remove = " wayland vulkan x11 amdhsa opencl directfb sysvinit 3g"' >> conf/local.conf
 
-    # Ensure traditional SysVinit scripts include the network configuration layers and wireless utilities
-    echo 'VIRTUAL-RUNTIME_init_manager = "sysvinit"' >> conf/local.conf
-    echo 'IMAGE_INSTALL:append = " init-ifupdown iw"' >> conf/local.conf
+    # Target systemd as the init manager for Scarthgap
+    echo 'INIT_MANAGER = "systemd"' >> conf/local.conf
+    echo 'DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"' >> conf/local.conf
+    # Forces the wpa_supplicant service instance to automatically hook onto wlan0 at boot time
+    echo 'SYSTEMD_AUTO_ENABLE:pn-wpa-supplicant = "enable"' >> conf/local.conf
+    echo 'SYSTEMD_SERVICE:pn-wpa-supplicant:append = " wpa_supplicant@wlan0.service"' >> conf/local.conf
 
 fi
 

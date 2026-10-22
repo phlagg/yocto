@@ -1,0 +1,2 @@
+KERNEL=="ttyS*", GROUP="spiaccess", MODE="0660"
+KERNEL=="ble_serial", GROUP="spiaccess", MODE="0660"

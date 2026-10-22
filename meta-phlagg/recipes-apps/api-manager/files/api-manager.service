@@ -1,0 +1,26 @@
+[Unit]
+Description=Production API Manager Service
+# Ensure network interfaces are up and assigned IP addresses before starting
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Path to the binary installed via your CMakeLists.txt
+ExecStart=/usr/bin/api-manager
+
+# Production Hardening & Lifecycle Management
+Restart=on-failure
+RestartSec=5s
+
+# Prevent the application from running away with system resources
+CPUQuota=30%
+MemoryMax=128M
+
+# Redirect standard output logs directly to systemd journald
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+# Tells systemd to enable this service automatically on normal boot
+WantedBy=multi-user.target
